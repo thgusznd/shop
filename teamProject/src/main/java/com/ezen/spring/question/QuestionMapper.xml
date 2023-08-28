@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.ezen.spring.question.QuestionMapper">
+
+	<insert id="addQuestion"
+			useGeneratedKeys="true" keyProperty="questionNum"
+			parameterType="com.ezen.spring.question.Question">
+			INSERT INTO question VALUES(NULL,#{questionTitle},#{questionAuthor},NOW(),#{questionContents},#{questionPassword})	
+	</insert>
+	
+	<select id="getQuestion"
+			parameterType="_int"
+			resultType="com.ezen.spring.question.Question">
+			SELECT * FROM question WHERE questionNum=#{questionNum}	
+	</select>
+
+	<update id="update"
+			parameterType="com.ezen.spring.question.Question">
+			UPDATE question SET questionContents=#{questionContents} WHERE questionNum=#{questionNum}	
+	</update>
+	
+	<select id="getList"
+			resultType="com.ezen.spring.question.Question">
+			SELECT * FROM question 
+	</select>
+	
+</mapper>

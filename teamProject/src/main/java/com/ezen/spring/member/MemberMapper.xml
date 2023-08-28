@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.ezen.spring.member.MemberMapper">
+
+	<insert id="addMember"
+		parameterType="com.ezen.spring.member.Member">
+		INSERT INTO member VALUES(NULL,#{memberName},#{memberPhone},#{post},#{address},#{detailAddress},#{memberID},#{memberPwd},
+			#{memberEmail},#{memberSex},#{memberBirth},#{national},0,0,0,#{interest},"일반회원")	
+	</insert>
+	
+	<select id="login"
+		parameterType="string"
+		resultType="com.ezen.spring.member.Member">
+		SELECT * FROM member WHERE memberID=#{memberID} AND memberPwd=#{memberPwd}	
+	</select>
+	
+	<select id="myPage"
+		parameterType="string"
+		resultType="com.ezen.spring.member.Member">
+		SELECT * FROM member WHERE memberID=#{memberID}
+	</select>
+	
+	<select id="findIDByEmail"
+		parameterType="com.ezen.spring.member.Member" 
+		resultType="com.ezen.spring.member.Member">
+		SELECT * FROM member WHERE memberName=#{memberName} AND memberEmail=#{memberEmail}
+	</select>
+	
+	<select id="findIDByPhone"
+		parameterType="string" 
+		resultType="com.ezen.spring.member.Member">
+		SELECT * FROM member WHERE memberName=#{memberName} AND memberPhone=#{memberPhone}
+	</select>
+	
+	<select id="findPwdByEmail"
+		parameterType="com.ezen.spring.member.Member" 
+		resultType="com.ezen.spring.member.Member">
+		SELECT * FROM member WHERE memberName=#{memberName} AND memberId=#{memberId} AND memberEmail=#{memberEmail}
+	</select>
+	
+	<select id="findPwdByPhone"
+		parameterType="string" 
+		resultType="com.ezen.spring.member.Member">
+		SELECT * FROM member WHERE memberName=#{memberName} AND memberId=#{memberId} AND memberPhone=#{memberPhone}
+	</select>
+	
+	<select id="getMemmber"
+				parameterType="string"
+				resultType="com.ezen.spring.member.Member">
+				SELECT * FROM member WHERE memberID=#{memberID}	
+	</select>
+	
+	<update id="editMember"
+			parameterType="com.ezen.spring.member.Member">
+	UPDATE member SET 
+			memberName = #{memberName},
+		    memberPhone = #{memberPhone},
+		    post = #{post},
+		    address = #{address},
+		    detailAddress = #{detailAddress},
+		    memberPwd = #{memberPwd},
+		    memberEmail = #{memberEmail},
+		    memberBirth = #{memberBirth} 
+		  	WHERE memberID = #{memberID}
+	</update>
+	
+	<delete id="deleteMember"
+			parameterType="String">
+			DELETE FROM member WHERE memberID=#{memberID}		
+	</delete>
+	
+	<update id="updateSaveMoney"
+			parameterType="com.ezen.spring.member.Member">
+			UPDATE member SET saveMoney = #{saveMoney}
+			WHERE memberID = #{memberID}
+	</update>
+	
+
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.ezen.spring.answer.AnswerMapper">
+
+	<insert id="addAnswer"
+			useGeneratedKeys="true" keyProperty="answerNum"
+			parameterType="com.ezen.spring.answer.Answer">
+			INSERT INTO answer VALUES(NULL,#{answerAuthor},NOW(),#{answerContents},#{pQuestionNum})		
+	</insert>
+	
+	<select id="getAnswer"
+			parameterType="_int"
+			resultType="com.ezen.spring.answer.Answer">
+			SELECT * FROM answer WHERE pQuestionNum=#{questionNum}	
+	</select>
+	
+	<update id="editAnswer"
+			parameterType="com.ezen.spring.answer.Answer">
+			UPDATE answer SET answerContents=#{answerContents} WHERE answerNum=#{answerNum}
+	</update>
+	
+	<delete id="delete"
+		parameterType="Integer">
+		DELETE FROM answer WHERE answerNum=#{answerNum}
+	</delete>
+
+</mapper>

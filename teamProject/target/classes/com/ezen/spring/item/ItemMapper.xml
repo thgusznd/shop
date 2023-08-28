@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.ezen.spring.item.ItemMapper">
+
+	<insert id="addAndGetKey"
+		useGeneratedKeys="true" keyProperty="itemNum"
+		parameterType="com.ezen.spring.item.Item">
+		INSERT INTO item VALUES(NULL, #{goods}, #{price}, 0, 0, #{category}, #{explains}, #{hashtag}, #{inventory})
+	</insert>
+	
+	<insert id="addAttach" 
+			parameterType="com.ezen.spring.item.ItemAttach">
+			INSERT INTO itemAttach (itemAttachNum, itemAttachParentsNum, itemAttachName, itemAttachFileSize, itemAttachFileContentType) VALUES
+			<foreach collection="list" item="Item" separator=", ">
+		     	(NULL, #{Item.itemAttachParentsNum}, #{Item.itemAttachName}, #{Item.itemAttachFileSize}, #{Item.itemAttachFileContentType} )
+			</foreach>
+	</insert>
+	
+	<select id="getList"
+			resultType="map" >
+			SELECT b.itemNum itemNum, goods, price, purchaseCnt, CartCnt, category, explains, hashtag, inventory, 
+				GROUP_CONCAT(a.itemAttachNum) fnums, 
+				GROUP_CONCAT(itemAttachParentsNum) pnums, 
+				GROUP_CONCAT(itemAttachName) fnames, 
+				GROUP_CONCAT(itemAttachFileSize) fsizes, 
+				GROUP_CONCAT(itemAttachFileContentType) contenttypes 
+			FROM item b LEFT OUTER JOIN itemAttach a 
+			ON b.itemNum=a.itemAttachParentsNum
+			GROUP BY b.itemNum
+			ORDER BY b.itemNum DESC 
+	</select>
+	
+	<select id="getCategoryList"
+			resultType="map" >
+			SELECT b.itemNum itemNum, goods, price, purchaseCnt, CartCnt, category, explains, hashtag, inventory, 
+				GROUP_CONCAT(a.itemAttachNum) fnums, 
+				GROUP_CONCAT(itemAttachParentsNum) pnums, 
+				GROUP_CONCAT(itemAttachName) fnames, 
+				GROUP_CONCAT(itemAttachFileSize) fsizes, 
+				GROUP_CONCAT(itemAttachFileContentType) contenttypes 
+			FROM item b LEFT OUTER JOIN itemAttach a 
+			ON b.itemNum=a.itemAttachParentsNum
+			WHERE category = #{category}
+			GROUP BY b.itemNum
+			ORDER BY b.itemNum DESC 
+	</select>
+	
+	<select id="getItem"
+			parameterType="Integer"
+			resultType="map">
+			SELECT b.itemNum itemNum, goods, price, purchaseCnt, CartCnt, category, explains, hashtag, inventory, 
+				GROUP_CONCAT(a.itemAttachNum) fnums, 
+				GROUP_CONCAT(itemAttachParentsNum) pnums, 
+				GROUP_CONCAT(itemAttachName) fnames, 
+				GROUP_CONCAT(itemAttachFileSize) fsizes, 
+				GROUP_CONCAT(itemAttachFileContentType) contenttypes 
+			FROM item b LEFT OUTER JOIN itemAttach a
+			ON b.itemNum=a.itemAttachParentsNum
+			WHERE b.itemNum=#{itemNum}
+			GROUP BY b.itemNum
+	</select>
+	
+	<update id="update"
+		parameterType="com.ezen.spring.item.Item">
+		UPDATE item SET goods=#{goods}, price=#{price}, explains=#{explains} WHERE itemNum=#{itemNum}
+	</update>
+	
+	<delete id="delItem"
+		parameterType="Integer">
+		DELETE FROM item WHERE itemNum=#{itemNum}
+	</delete>
+	
+	<delete id="deleteAttach" parameterType="_int">
+	 	DELETE FROM itemAttach WHERE itemAttachNum=#{itemAttachNum}
+	</delete>
+
+</mapper>
