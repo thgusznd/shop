@@ -77,4 +77,17 @@
 	 	DELETE FROM itemAttach WHERE itemAttachNum=#{itemAttachNum}
 	</delete>
 
+	<select id="getTopItems" parameterType="Integer" resultType="map">
+			SELECT i.itemNum, i.goods, i.price, i.purchaseCnt, i.cartCnt, i.category, i.explains, i.inventory, i.option1, i.option2, 
+			group_concat(a.itemAttachNum) inums,
+			group_concat(a.itemAttachName) inames,
+			group_concat(a.itemAttachParentsNum)ipnums,
+			group_concat(itemAttachFileSize) ifsizes,
+			group_concat(itemAttachFileContentType) icontenttypes
+			FROM item i LEFT OUTER JOIN itemAttach a
+			ON i.itemNum = a.itemParentsNum
+			GROUP BY i.itemNum
+			ORDER BY purchaseCnt DESC
+			LIMIT 10
+		  </select>
 </mapper>

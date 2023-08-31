@@ -78,5 +78,9 @@ public class ItemDAO {
 	public boolean addAttach(List<ItemAttach> attList) {
 		return itemMapper.addAttach(attList)>0;
 	}
+	
+	public List<Map<String, String>> getTopItems(int limit) { //best top 10 가져오기 
+        return itemMapper.getTopItems(limit);
+    }
 
 }
