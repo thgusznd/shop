@@ -102,34 +102,38 @@ public class OrderController
 	
 	@PostMapping("/direct")  //장바구니 담기 아닌 바로 주문 버튼 눌렀을 때 메소드
 	@ResponseBody
-	public Map<String,Object> derectOrder(@SessionAttribute(name="userid",required = false) String uid, @RequestParam("itemNum") int itemNum,@RequestParam("qty") int qty)
+	public Map<String,Object> derectOrder(@SessionAttribute(name="memberID",required = false) String memberID,
+										  @RequestParam("itemNum") int itemNum,
+										  @RequestParam("quantity") int quantity)
 	{
 		Map<String, Object> map = new HashMap<>();
 		
-		if(uid==null) { //로그인을 안했을 경우 add 불가능
+		if(memberID==null) { //로그인을 안했을 경우 add 불가능
 			map.put("ordered",false);
 			map.put("msg", "로그인을 해주세요.");
 		}else {
 			java.sql.Date date = new java.sql.Date(new Date().getTime());
-			ItemVO item = itemSvc.detailItem(itemNum);
+			Item item = itemSvc.detailItem(itemNum);
 			String goods = item.getGoods();
 			int price = item.getPrice();
 			
-			OrderVO o = new OrderVO();
-			o.setGoods(goods);
+			Order o = new Order();
+			o.setItemNum(itemNum);
 			o.setPrice(price);
-			o.setUser(uid);
-			o.setQty(qty);
-			o.setOrderDate(date);
+			o.setBuyer(memberID);
+			o.setQuantity(quantity);
+			o.setPaymentDate(date);
+			
 			
 			boolean ordered = orderDAO.addOrder(o);
 			
 			if(ordered) {
-				int paymentAmount = price * qty;
+				int paymentAmount = price * quantity
+;
 				int saveMoney = (int)(paymentAmount * 0.03);
 				int point = 100;
 				
-				MemberVO orderUser = memberDAO.getUser(uid);
+				Member orderUser = memberDAO.getMember(uid);
 				int newSaveMoney = orderUser.getSaveMoney()+saveMoney;
 				int newPoint = orderUser.getPoint()+point;
 				

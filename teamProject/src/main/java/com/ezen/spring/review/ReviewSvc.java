@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class ReviewSvc 
 {
 	@Autowired
@@ -21,7 +23,6 @@ public class ReviewSvc
 	public Review getReview(int reviewNum)
 	{
 		List<Map<String, String>> list = reviewDAO.detailReview(reviewNum);
-		
 		Review r = getReviewIn(list.get(0));
 		r.setReviewAttList(new ArrayList<ReviewAttach>());
 		
@@ -62,11 +63,11 @@ public class ReviewSvc
 	private Review getReviewIn(Map m)
 	{
 		int reviewNum = Integer.parseInt(m.get("reviewNum").toString());
-		String reviewTitle = m.get("reviewTitle").toString();
 		String reviewContents = m.get("reviewContents").toString();
 		String reviewAuthor = m.get("reviewAuthor").toString();
 		java.sql.Date reviewDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		int reviewStar = Integer.parseInt(m.get("reviewStar").toString());
 		try {
 			reviewDate = new java.sql.Date(sdf.parse(m.get("reviewDate").toString()).getTime());
 		} catch (ParseException e) {
@@ -76,11 +77,11 @@ public class ReviewSvc
 		
 		Review review = new Review();
 		review.setReviewNum(reviewNum);
-		review.setReviewTitle(reviewTitle);
 		review.setReviewContents(reviewContents);
 		review.setReviewAuthor(reviewAuthor);
 		review.setReviewDate(reviewDate);
 		review.setReviewLikeCnt(reviewLikeCnt);
+		review.setReviewStar(reviewStar);
 		
 		return review;
 	}
@@ -98,5 +99,9 @@ public class ReviewSvc
 		boolean fdeleted = delFile.delete();
 
 		return deleted && fdeleted;
+	}
+	
+	public List<Map<String, String>> getTopReviews() {
+	    return reviewDAO.getTopReviews();
 	}
 }

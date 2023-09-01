@@ -112,7 +112,9 @@ public class ItemSvc {
 		
 		return deleteAttachByDB && deleteAttachByServer;
 	}
-	
-	
 
+	//Best item Top 10 가져오기 
+	public List<Map<String, String>> getTopItems(int limit) {
+	    return itemDAO.getTopItems(limit);
+	}
 }

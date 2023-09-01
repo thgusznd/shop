@@ -4,7 +4,7 @@
 <mapper namespace="com.ezen.spring.review.ReviewMapper">
 
 	<insert id="addReview" useGeneratedKeys="true" keyProperty="reviewNum" parameterType="com.ezen.spring.review.Review">
-			INSERT INTO review VALUES(NULL, #{reviewTitle}, #{reviewAuthor}, #{reviewContents}, NOW(), #{reviewParentsNum}, 0)
+			INSERT INTO review VALUES(NULL, #{reviewAuthor}, #{reviewContents}, NOW(), #{reviewParentsNum}, 0, #{reviewStar})
 	</insert>
 	
 	<insert id="addAttachReview" useGeneratedKeys="true" keyProperty="reviewAttachNum" parameterType="com.ezen.spring.review.ReviewAttach">
@@ -14,8 +14,21 @@
 			</foreach>
 	</insert>
 	
-	<select id="reviewList" parameterType="Integer" resultType="map">
-			SELECT reviewNum, reviewTitle, reviewAuthor, reviewContents, reviewDate, reviewParentsNum, reviewLikeCnt, 
+	<select id="getReviewList" resultType="map">
+		SELECT reviewNum, reviewAuthor, reviewContents, reviewDate, reviewParentsNum, reviewLikeCnt, reviewStar, 
+				GROUP_CONCAT(reviewAttachNum) AS reviewAttachNums,
+				GROUP_CONCAT(reviewAttachName) AS reviewAttachNames,
+				GROUP_CONCAT(reviewAttachParentsNum) AS reviewAttachParentsNums,
+				GROUP_CONCAT(reviewAttachFileSize) AS reviewfileSizes,
+				GROUP_CONCAT(reviewAttachFileContentType) AS reviewContentTypes
+			FROM review r LEFT OUTER JOIN reviewAttach a
+			ON r.reviewNum=a.reviewAttachParentsNum
+			GROUP BY r.reviewNum
+			ORDER BY r.reviewNum DESC
+	</select>
+	
+	<select id="reviewList" resultType="map">
+			SELECT reviewNum, reviewAuthor, reviewContents, reviewDate, reviewParentsNum, reviewLikeCnt, reviewStar, 
 				GROUP_CONCAT(reviewAttachNum) AS reviewAttachNums,
 				GROUP_CONCAT(reviewAttachName) AS reviewAttachNames,
 				GROUP_CONCAT(reviewAttachParentsNum) AS reviewAttachParentsNums,
@@ -29,7 +42,7 @@
 	</select>
 	
 	<select id="getReview" parameterType="Integer" resultType="map">
-			SELECT reviewNum, reviewTitle, reviewContents, reviewDate, reviewParentsNum, reviewLikeCnt, reviewAuthor,
+			SELECT reviewNum, reviewAuthor, reviewContents, reviewDate, reviewParentsNum, reviewLikeCnt, reviewStar, 
 				GROUP_CONCAT(reviewAttachNum) AS reviewAttachNums,
 				GROUP_CONCAT(reviewAttachName) AS reviewAttachNames,
 				GROUP_CONCAT(reviewAttachParentsNum) AS reviewAttachParentsNums,
@@ -49,7 +62,7 @@
 	</select>
 	
 	<update id="updateReview" parameterType="com.ezen.spring.review.Review">
-			UPDATE review SET reviewTitle=#{reviewTitle}, reviewContents=#{reviewContents} WHERE reviewNum=#{reviewNum}
+			UPDATE review SET reviewContents=#{reviewContents} WHERE reviewNum=#{reviewNum}
 	</update>
 	
 	<delete id="deleteReview" parameterType="Integer">
@@ -59,4 +72,18 @@
 	<update id="likeCnt" parameterType="Integer">
 			UPDATE review SET reviewLikeCnt=reviewLikeCnt+1 WHERE reviewNum=#{reviewNum}
 	</update>
+	
+	<select id="getTopReviews" resultType="map">
+		SELECT reviewNum, reviewAuthor, reviewContents, reviewDate, reviewParentsNum, reviewLikeCnt, reviewStar, 
+				GROUP_CONCAT(reviewAttachNum) AS reviewAttachNums,
+				GROUP_CONCAT(reviewAttachName) AS reviewAttachNames,
+				GROUP_CONCAT(reviewAttachParentsNum) AS reviewAttachParentsNums,
+				GROUP_CONCAT(reviewAttachFileSize) AS reviewfileSizes,
+				GROUP_CONCAT(reviewAttachFileContentType) AS reviewContentTypes
+		FROM review r LEFT OUTER JOIN reviewAttach a
+		ON r.reviewNum = a.reviewAttachParentsNum
+		GROUP BY r.reviewNum
+		ORDER BY reviewLikeCnt DESC
+		LIMIT 3
+	 </select>
 </mapper>  

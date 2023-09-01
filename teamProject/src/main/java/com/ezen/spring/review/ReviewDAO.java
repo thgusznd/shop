@@ -5,9 +5,6 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-
 @Repository("reviewDAO")
 public class ReviewDAO 
 {
@@ -34,11 +31,9 @@ public class ReviewDAO
 		return reviewSaved && attachSaved;
 	}
 	
-	public PageInfo<Map> reviewList(int itemNum, int pageNum)
+	public List<Map<String, String>> getReviewList()
 	{
-		PageHelper.startPage(pageNum, 2);
-		PageInfo<Map> pageInfo = new PageInfo<>(reviewMapper.reviewList(itemNum));
-		return pageInfo;
+		return reviewMapper.getReviewList();
 	}
 	
 	public List<Map<String, String>> detailReview(int reviewNum)
@@ -75,4 +70,8 @@ public class ReviewDAO
 	{
 		return reviewMapper.likeCnt(reviewNum)>0;
 	}
+	
+	public List<Map<String, String>> getTopReviews() { 
+        return reviewMapper.getTopReviews();
+    }
 }

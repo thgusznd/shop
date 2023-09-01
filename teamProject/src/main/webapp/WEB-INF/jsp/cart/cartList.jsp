@@ -35,28 +35,6 @@ function modifyQty(cartNum) { //수량 수정
 	});
 }
 
-function removeItem() {
-	if(!confirm('선택된 상품을 장바구니에서 제거하시겠어요?')) return false;
-	var  formdata = $('#deleteForm').serialize();
-
-	$.ajax({
-		url:'/cart/delete',
-		method:'Post',
-		data:formdata,
-		cache:false,
-		dataType:'json',
-		success:function(res){
-			alert(res.deleted ? '삭제 성공':'삭제 실패');
-			location.href="/cart/list";
-
-		},
-		error:function(xhr,status,err){
-			alert('에러:'+status+"/"+err);
-		}
-	});
-	
-	return false;
-}
 function removeItem() {   
 	   if(!confirm('선택된 상품을 장바구니에서 제거하시겠어요?')) return false;
 	   
@@ -99,14 +77,18 @@ function clearCart() {
 	      cache:false,
 	      dataType:'json',
 	      success:function(res){
-	         alert(res.cleared ? '장바구니를 비웠습니다':'비우기 실패');
-	         location.href='/cart/list';
+	    	  if(res.msg){
+			  		alert(res.msg);
+			  }else{
+		  	  		alert(res.cleared ? '장바구니 비우기 완료' : '장바구니 비우기 에러');
+			  		location.href="/cart/list";
+			  }
 	      },
 	      error:function(xhr,status,err){
 	         alert('에러:'+status + '/' + err);
 	      }
 	   });
-	   
+	   return false;
 	}
 	
 function add_Order(){ //결제
@@ -163,11 +145,11 @@ function add_Order(){ //결제
 </table>
 </form>
 	<p>
-	<nav>
-		[<a href="/item/list">계속 쇼핑</a>]
-		[<a href="javascript:add_Order();">결제</a>]
-		[<a href="javascript:clearCart();">장바구니 비우기</a>]
-	</nav>
+	<div id="buttons">
+		<button type="button" onclick="location.href='/item/list/page/1'">계속 쇼핑</button>
+		<button type="button" onclick="location.href='javascript:add_Order();'">결제</button>
+		<button type="button" onclick="location.href='javascript:clearCart();'">장바구니 비우기</button>
+	</div>
 </main>
 </body>
 </html>

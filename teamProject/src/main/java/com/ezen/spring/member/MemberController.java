@@ -1,6 +1,7 @@
 package com.ezen.spring.member;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.ezen.spring.item.ItemSvc;
+import com.ezen.spring.review.ReviewSvc;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -28,9 +32,24 @@ public class MemberController {
 	@Qualifier("memberDAO")
 	private MemberDAO memberDAO;
 	
-	@GetMapping("/") //test
-	public String test()
+	@Autowired
+	@Qualifier("itemSvc")
+	private ItemSvc itemSvc;
+	
+	@Autowired
+	@Qualifier("reviewSvc")
+	private ReviewSvc reviewSvc;
+	
+	@GetMapping("/") //쇼핑몰 main 화면 
+	public String main(Model model)
 	{
+		// best Item top10 메인 화면에 띄우기 
+		List<Map<String, String>> topItems = itemSvc.getTopItems(10);
+	    model.addAttribute("topItems", topItems);
+	    
+	 // best Review top3 메인 화면에 띄우기 
+	    List<Map<String, String>> topReviews = reviewSvc.getTopReviews();
+	    model.addAttribute("topReviews", topReviews);
 		return "main";
 	}
 	

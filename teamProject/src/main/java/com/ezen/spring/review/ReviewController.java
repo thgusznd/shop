@@ -17,15 +17,19 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ezen.spring.item.ItemController;
 import com.ezen.spring.item.ItemDAO;
 import com.github.pagehelper.PageInfo;
+import com.mysql.cj.log.Log;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/review")
 @SessionAttributes("memberID")
+@Slf4j
 public class ReviewController 
 {
 	@Autowired
@@ -44,7 +48,8 @@ public class ReviewController
 	}
 	
 	@GetMapping("/add/{itemNum}")
-	public String addReview(@PathVariable int itemNum, Model model)
+	public String addReview(@PathVariable int itemNum, Model model,
+							@SessionAttribute(name="memberID",required = false) String memberID)
 	{
 		String goods = null;
 		List<Map<String, String>> list = itemDAO.getItem(itemNum);
@@ -89,10 +94,11 @@ public class ReviewController
 			
 			review.setReviewAttList(reviewAttachList);
 			review.setReviewAuthor(memberID);
+			log.info("reviewStar={}",review.getReviewStar());
 			boolean added = reviewDAO.addReview(review);
 			Map<String, Object> map = new HashMap<>();
 			map.put("added", added);
-			map.put("PKNum", review.getReviewNum());
+			map.put("reviewNum", review.getReviewNum());
 			
 			return map;
 		}catch(Exception ex) {
@@ -103,13 +109,13 @@ public class ReviewController
 		return map;
 	}
 	
-	@GetMapping("/list/{itemNum}/page/{pn}")  //리뷰리스트
-	public String reviewList(@PathVariable int itemNum, @PathVariable int pn, Model model)
+	@GetMapping("/list")  //전체 리뷰 리스트
+	public String reviewList(Model model)
 	{
-		PageInfo<Map> pageInfo = reviewDAO.reviewList(itemNum,pn);
-		model.addAttribute("pageInfo", pageInfo);
-		model.addAttribute("itemNum", itemNum);
-		return "item/reviewList";
+		List<Map<String, String>> reviewList = reviewDAO.getReviewList();
+		model.addAttribute("reviewList", reviewList);
+		log.info("reviewList={}", reviewList);
+		return "review/reviewList";
 	}
 	
 	@GetMapping("/get/{reviewNum}")  //리뷰 상세보기
@@ -117,6 +123,7 @@ public class ReviewController
 							   @SessionAttribute(name="memberID",required = false) String memberID)
 	{
 		Review review = reviewSvc.getReview(reviewNum);
+		log.info("Controller : reviewStar={}", review.getReviewStar());
 		model.addAttribute("review", review);
 		model.addAttribute("memberID", memberID);
 		return "review/reviewDetail";

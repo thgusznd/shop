@@ -97,17 +97,17 @@
     		cache:false,
     		dataType:'json',
     		success:function(res) {
-    			alert(res.added ? '작성 완료':'작성 실패');
-    			if(res.added) {
-	            	if(!confirm("장바구니로 이동할까요?")) return;
-	            	location.href = '/cart/list';
-	            }
+ 	            if(res.added) {
+ 	            	if(!confirm("장바구니로 이동할까요?")) return;
+ 	            	location.href = '/cart/list';
+ 	            }
     		},
-    		error:function(xhr,status,err){
-    			alert('에러:' + err);
-    		}
-    	});
-    	return false;
+	        error: function (xhr, status, err) {
+	            alert(status + "/" + err);
+	        }
+	    });
+	    return false;
+    }
 </script>
 
 </head>

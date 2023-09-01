@@ -66,8 +66,8 @@ public class CartController {
 		else {
 			boolean addCart = cartDAO.addCart(cart);
 			map.put("added", addCart);
+			map.put("itemNum", itemNum);
 		}
-	    map.put("itemNum", itemNum);
 	    return map;  
 	}
 	
@@ -113,13 +113,14 @@ public class CartController {
 		return map;
 	}
 	
-	@PostMapping("/clear") //장바구니 비우기
+	@GetMapping("/clear")  //카트 전부 비우기
 	@ResponseBody
 	public Map<String,Object> cartClear(@SessionAttribute(name="memberID",required = false) String memberID){
 		Map<String, Object> map = new HashMap<>();
 		
 		List<Cart> cartList = cartDAO.getList(memberID);
-		if(cartList==null) {
+		if(cartList == null || cartList.isEmpty()) {
+			map.put("cleared", false);
 			map.put("msg", "장바구니가 비어있습니다.");
 		} else {
 			boolean cleared = cartDAO.cartClear(memberID);

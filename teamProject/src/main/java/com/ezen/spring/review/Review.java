@@ -12,16 +12,16 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude= {"reviewAuthor", "reviewContents", "reviewDate", "reviewParentsNum", "reviewLikeCnt", "reviewStar"})
 public class Review 
 {
-	private int reviewNum;
-	private String reviewTitle;
-	private String reviewAuthor;
-	private String reviewContents;
-	private java.sql.Date reviewDate;
-	private int reviewParentsNum;
-	private int reviewLikeCnt;
+	private int reviewNum; //리뷰 번호(PK,AI)
+	private String reviewAuthor; //리뷰 작성자(memberID) 
+	private String reviewContents; //리뷰 내용 
+	private java.sql.Date reviewDate; //리뷰 작성일 
+	private int reviewParentsNum; //관련 아이템 번호 
+	private int reviewLikeCnt; //리뷰 좋아요 갯수 
+	private int reviewStar; //별점 갯수 
 	
-	List<ReviewAttach> reviewAttList;
+	List<ReviewAttach> reviewAttList; //리뷰 사진 
 }

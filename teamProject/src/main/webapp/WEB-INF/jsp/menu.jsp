@@ -86,7 +86,7 @@ function logout() {
 		<tr>
 		<td>
 			<div class="aseado-container">
-				<span id="aseado"><a href="/item/list/page/1">𝐚𝐬𝐞𝐚𝐝𝐨</a></span>
+				<span id="aseado"><a href="/member/">𝐚𝐬𝐞𝐚𝐝𝐨</a></span>
 			</div>
 		</td>
 			<td><a id="title" onclick="toggleTable()">STORE</a>

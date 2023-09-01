@@ -8,7 +8,7 @@
 	<insert id="addCart"
 			useGeneratedKeys="true" keyProperty="cartNum"
 			parameterType="com.ezen.spring.cart.Cart">
-			INSERT INTO cart VALUES(NULL,#{itemNum},#{price},#{quantity},#{memberID})		
+			INSERT INTO cart VALUES(NULL,#{itemNum},#{price},#{quantity},#{memberID},#{optionInformation})		
 	</insert>
 
 	<select id="getList"
