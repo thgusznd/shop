@@ -72,7 +72,8 @@ public class CartController {
 	}
 	
 	@GetMapping("/list")  
-	public String cartList(Model model, @SessionAttribute(name="memberID",required = false) String memberID)
+	public String cartList(Model model, 
+						   @SessionAttribute(name="memberID",required = false) String memberID)
 	{
 		List<Cart> list = cartDAO.getList(memberID);
 		model.addAttribute("list", list);

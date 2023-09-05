@@ -16,7 +16,7 @@ function checkAll() {
 }
 
 function modifyQty(cartNum) { //수량 수정 
-	var qty = $('#qty'+cartNum).val();
+	var quantity = $('#quantity'+cartNum).val();
 	$.ajax({
 		url:'/cart/update',
 		method:'post',
@@ -24,10 +24,11 @@ function modifyQty(cartNum) { //수량 수정
 		dataType:'json',
 		data: {
 	            cartNum: cartNum,
-	            qty: qty
+	            quantity: quantity
 	       	  },
 		success:function(res){
 			alert(res.updated ? '수정 성공':'수정 실패');
+			location.reload();
 		},
 		error:function(xhr,status,err){
 			error('에러:' + status+"/"+err);
@@ -131,11 +132,15 @@ function add_Order(){ //결제
 <label>전체선택<input type="checkbox" id="cboxAll" name="cboxAll" onclick="checkAll();"></label>
 <tr><th>번호</th><th>상품명</th><th>가격</th><th>수량</th><th><button type="submit">삭제</button></th></tr>
 	<c:forEach var="c" items="${list}">
-		<tr>
-			<td>${c.cartNum}</td>
-			<td>${c.itemNum}</td>
-			<td>${c.price}</td>
-			<td>
+      <tr>
+         <td class="product-image">
+             <a href="/item/detail/${c.itemNum}">
+            <img src="${pageContext.request.contextPath}/items/${c.fnames}"></a>
+         </td>
+         <td>${c.cartNum}</td>
+         <td>${c.goods}</td>
+         <td>${c.price}</td>
+         <td>
 			<input type="number" class="quantity" id="quantity${c.cartNum}" value="${c.quantity}" min="1" max="50">
 			<button type="button" onclick="modifyQty(${c.cartNum});">수정</button>
 			</td>

@@ -38,6 +38,21 @@ public class OrderController
 	@Autowired
 	private ItemSvc itemSvc;
 	
+	@PostMapping("/addForm") //주문 폼 보여주기 
+	@ResponseBody
+	public String addForm(@SessionAttribute(name="memberID",required = false) String memberID,
+								   @RequestParam List<Integer> cartNums, Model model){
+		Member member = memberDAO.getMember(memberID);
+		List<Cart> orderItemList = new ArrayList<>();
+		for(int i=0;i<cartNums.size();i++) {
+			Cart cart = cartDAO.getCartByCartNum(cartNums.get(i));
+			orderItemList.add(cart);
+		}
+		model.addAttribute(member);
+		model.addAttribute(orderItemList);
+		return "order/addOrderForm";
+	}
+	
 	@PostMapping("/add")
 	@ResponseBody
 	public Map<String, Object> addOrder(@SessionAttribute(name="memberID",required = false) String memberID, 
@@ -62,7 +77,6 @@ public class OrderController
 			order.setOrderNum(orderNum); //주문번호 
 			order.setPaymentDate(paymentDate); //결제일 
 			order.setItemNum(cart.getItemNum()); //상품번호 
-			Item item = itemSvc.getItem(cart.getItemNum());
 			order.setOptionInformation(cart.getOptionInformation()); //cart에 옵션정보 변수 추가하기 
 			order.setQuantity(cart.getQuantity()); //수량 
 			order.setBuyer(memberID); //구매자 

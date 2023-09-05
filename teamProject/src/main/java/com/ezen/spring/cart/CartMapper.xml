@@ -11,16 +11,21 @@
 			INSERT INTO cart VALUES(NULL,#{itemNum},#{price},#{quantity},#{memberID},#{optionInformation})		
 	</insert>
 
-	<select id="getList"
-			parameterType="String"
-			resultType="com.ezen.spring.cart.Cart">
-			SELECT c.cartNum, c.itemNum, c.price, c.quantity, c.memberID, 
-		    	   i.itemNum , i.goods, i.price, i.purchaseCnt, i.cartCnt, i.category, i.explains, i.hashtag, i.inventory 
-		    FROM cart c INNER JOIN item i
-		    ON c.itemNum = i.itemNum 
-		    WHERE c.memberID = #{memberID} 
-		    ORDER BY c.cartNum DESC
-	</select>
+	<select id="getList" resultType="map">
+	        SELECT c.cartNum, c.itemNum, c.price, c.quantity, c.memberID, i.itemNum,i.goods,
+	           GROUP_CONCAT(a.itemAttachNum) fnums, 
+	           GROUP_CONCAT(itemAttachParentsNum) pnums, 
+	           GROUP_CONCAT(itemAttachName) fnames, 
+	           GROUP_CONCAT(itemAttachFileSize) fsizes, 
+	           GROUP_CONCAT(itemAttachFileContentType) contenttypes
+	         FROM cart c 
+	         LEFT OUTER JOIN item i ON c.itemNum = i.itemNum
+	         LEFT OUTER JOIN itemAttach a ON i.itemNum = a.itemAttachParentsNum
+	         WHERE c.memberID = #{memberID} 
+	         GROUP BY c.cartNum
+	         ORDER BY c.cartNum DESC
+   </select>
+
 	
 	<delete id="cartClear"
 			parameterType="String">
