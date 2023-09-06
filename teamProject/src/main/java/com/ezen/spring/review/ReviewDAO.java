@@ -31,9 +31,16 @@ public class ReviewDAO
 		return reviewSaved && attachSaved;
 	}
 	
+	//전체 리뷰 리스트 가져오기 
 	public List<Map<String, String>> getReviewList()
 	{
 		return reviewMapper.getReviewList();
+	}
+	
+	//아이템 관련 리뷰 리스트 가져오기 
+	public List<Map<String, String>> getReviewListByItemNum(int itemNum) 
+	{
+		return reviewMapper.getReviewListByItemNum(itemNum);
 	}
 	
 	public List<Map<String, String>> detailReview(int reviewNum)
@@ -71,7 +78,9 @@ public class ReviewDAO
 		return reviewMapper.likeCnt(reviewNum)>0;
 	}
 	
+	//best Review Top 3 가져오기 
 	public List<Map<String, String>> getTopReviews() { 
         return reviewMapper.getTopReviews();
     }
+	
 }

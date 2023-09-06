@@ -27,7 +27,7 @@
 			ORDER BY r.reviewNum DESC
 	</select>
 	
-	<select id="reviewList" resultType="map">
+	<select id="getReviewListByItemNum" resultType="map">
 			SELECT reviewNum, reviewAuthor, reviewContents, reviewDate, reviewParentsNum, reviewLikeCnt, reviewStar, 
 				GROUP_CONCAT(reviewAttachNum) AS reviewAttachNums,
 				GROUP_CONCAT(reviewAttachName) AS reviewAttachNames,

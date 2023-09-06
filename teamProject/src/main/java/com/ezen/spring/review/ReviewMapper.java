@@ -13,7 +13,11 @@ public interface ReviewMapper
 	
 	public int addAttachReview(List<ReviewAttach> reviewAttachList);
 	
+	//전체 리뷰 리스트 
 	public List<Map<String, String>> getReviewList();
+	
+	//아이템별 리뷰 리스트 
+	public List<Map<String, String>> getReviewListByItemNum(int itemNum);
 	
 	public List<Map<String, String>> getReview(int reviewNum);
 	
@@ -28,4 +32,6 @@ public interface ReviewMapper
 	public int likeCnt(int reviewNum);
 	
 	public List<Map<String, String>> getTopReviews();
+
+	
 }

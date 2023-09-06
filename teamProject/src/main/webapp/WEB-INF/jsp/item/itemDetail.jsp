@@ -159,7 +159,27 @@
 	</nav>
 	
 	===============
-	리뷰 관련 칸 
+	<c:forEach var="r" items="${reviewList}">
+		<!-- 기존에 출력된 review 중복 출력 방지 -->
+		<c:set var="reviewNum" value="${0}"></c:set>
+		<c:if test="${r.reviewNum!=reviewNum}">
+			<tr><td colspan="2">
+				<a href="/review/get/${r.reviewNum}">
+					<img src="${pageContext.request.contextPath}/reviewPhoto/${fn:split(r.reviewAttachNames, ',')[0]}">
+				</a>
+			</td></tr>
+			<tr><td colspan="2">
+				<a href="/review/get/${r.reviewNum}">${r.reviewContents}</a>
+			</td></tr>
+			<tr>
+				<th>구매자 : </th><td>${r.reviewAuthor}</td> 
+			</tr>
+			<tr>
+				<th>👍🏻 :  </th><td>${r.reviewLikeCnt}</td>
+			</tr>	
+		</c:if>
+		<c:set var="reviewNum" value="${r.reviewNum}"/>
+	</c:forEach>
 </main>
 </body>
 </html>

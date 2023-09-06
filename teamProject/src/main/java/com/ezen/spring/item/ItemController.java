@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ezen.spring.item.ItemAttach;
 import com.ezen.spring.member.Member;
 import com.ezen.spring.member.MemberDAO;
+import com.ezen.spring.review.ReviewDAO;
 import com.github.pagehelper.PageInfo;
 
 import jakarta.servlet.ServletContext;
@@ -43,6 +44,10 @@ public class ItemController {
 	@Autowired
 	@Qualifier("memberDAO")
 	private MemberDAO memberDAO;
+	
+	@Autowired
+	@Qualifier("reviewDAO")
+	private ReviewDAO reviewDAO;
 	
 	@Autowired
 	private ItemSvc itemSvc;
@@ -111,10 +116,16 @@ public class ItemController {
 	@GetMapping("/detail/{itemNum}") //아이템 상세보기 
 	public String getBoard(@PathVariable int itemNum, @SessionAttribute(name="memberID",required = false) String memberID, Model model)
 	{
+		//아이템 관련 
 		Item item = itemSvc.getItem(itemNum);
 		model.addAttribute("item", item); 
 		Member member = memberDAO.getMember(memberID);
 		model.addAttribute("member",member);
+		
+		//리뷰 관련 
+		List<Map<String, String>> reviewList = reviewDAO.getReviewListByItemNum(itemNum);
+		model.addAttribute("reviewList", reviewList);
+		
 		return "item/itemDetail";
 	}
 	

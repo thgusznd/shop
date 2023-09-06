@@ -78,7 +78,7 @@
 	</delete>
 
 	<select id="getTopItems" parameterType="Integer" resultType="map">
-		SELECT i.itemNum, i.goods, i.price, i.purchaseCnt, i.cartCnt, i.category, i.explains, i.inventory, i.option1, i.option2, 
+		SELECT i.itemNum, i.goods, i.price, i.purchaseCnt, i.cartCnt, i.category, i.explains, i.inventory, 
 			group_concat(a.itemAttachNum) inums,
 			group_concat(a.itemAttachName) inames,
 			group_concat(a.itemAttachParentsNum)ipnums,
