@@ -113,8 +113,8 @@
 		}
     </style>
 	<script type="text/javascript">
-    var totalPrice = parseInt("<c:out value='${totalPrice}'/>");
-    var shippingFee = parseInt("<c:out value='${shippingFee}'/>");
+    var shippingFee = parseInt(document.getElementById("shippingFee").value);
+    var totalPrice = parseInt(document.getElementById("totalPrice").value);
     
     function updateReserveDiscount() {
         var reserveDiscount = parseInt(document.getElementById("reserveDiscount").value);
@@ -203,7 +203,7 @@
 			        </td>
 			    </tr>
 			    <c:set var="totalPrice" value="${totalPrice + subtotal}" />
-			    <input type="hidden" id="totalPrice" value="${totalPrice}" />
+			    <input type="hidden" id="totalPrice" name="totalPrice" value="${totalPrice}">
 			    <c:set var="totalSaveMoney" value="${totalSaveMoney + subtotalSaveMoney}" />
 			</c:forEach>
 		</table>
@@ -240,6 +240,7 @@
 							<span style="color: black;">3,000 원</span>
 							<c:set var="shippingFee" value="3000" />
 						</c:if>
+						<input type="hidden" id="shippingFee" name="shippingFee" value="${shippingFee}">
 					</td>
 				</tr>
 				<c:set var="finalPrice" value="${totalPrice - reserveDiscount + shippingFee}" />
