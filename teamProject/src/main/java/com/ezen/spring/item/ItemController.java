@@ -114,7 +114,9 @@ public class ItemController {
 	}
 	
 	@GetMapping("/detail/{itemNum}") //아이템 상세보기 
-	public String getBoard(@PathVariable int itemNum, @SessionAttribute(name="memberID",required = false) String memberID, Model model)
+	public String getBoard(@PathVariable int itemNum, 
+						   @SessionAttribute(name="memberID",required = false) String memberID, 
+						   Model model)
 	{
 		//아이템 관련 
 		Item item = itemSvc.getItem(itemNum);
@@ -124,7 +126,9 @@ public class ItemController {
 		
 		//리뷰 관련 
 		List<Map<String, String>> reviewList = reviewDAO.getReviewListByItemNum(itemNum);
+		int numberOfReviews = reviewDAO.numberOfReviews(itemNum);
 		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("numberOfReviews", numberOfReviews);
 		
 		return "item/itemDetail";
 	}

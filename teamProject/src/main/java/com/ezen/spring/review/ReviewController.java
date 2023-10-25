@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ezen.spring.item.ItemController;
 import com.ezen.spring.item.ItemDAO;
+import com.ezen.spring.member.Member;
+import com.ezen.spring.member.MemberDAO;
 import com.github.pagehelper.PageInfo;
 import com.mysql.cj.log.Log;
 
@@ -40,6 +43,10 @@ public class ReviewController
 	
 	@Autowired
 	private ReviewSvc reviewSvc;
+	
+	@Autowired
+	@Qualifier("memberDAO")
+	private MemberDAO memberDAO;
 	
 	@GetMapping("/")
 	public String index()
@@ -114,7 +121,6 @@ public class ReviewController
 	{
 		List<Map<String, String>> reviewList = reviewDAO.getReviewList();
 		model.addAttribute("reviewList", reviewList);
-		log.info("reviewList={}", reviewList);
 		return "review/reviewList";
 	}
 	
@@ -123,9 +129,12 @@ public class ReviewController
 							   @SessionAttribute(name="memberID",required = false) String memberID)
 	{
 		Review review = reviewSvc.getReview(reviewNum);
-		log.info("Controller : reviewStar={}", review.getReviewStar());
 		model.addAttribute("review", review);
 		model.addAttribute("memberID", memberID);
+		
+		Member member = memberDAO.getMember(memberID);
+		model.addAttribute("member", member);
+		
 		return "review/reviewDetail";
 	}
 	

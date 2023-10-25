@@ -8,7 +8,7 @@
 	<insert id="addCart"
 			useGeneratedKeys="true" keyProperty="cartNum"
 			parameterType="com.ezen.spring.cart.Cart">
-			INSERT INTO cart VALUES(NULL,#{itemNum},#{price},#{quantity},#{memberID},#{optionInformation})		
+			INSERT INTO cart VALUES(NULL,#{itemNum},#{price},#{quantity},#{memberID})		
 	</insert>
 
 	<select id="getList" resultType="map">
@@ -50,7 +50,19 @@
 	
 	<select id="getCartByCartNum"
 			parameterType="Integer"
-			resultType="com.ezen.spring.cart.Cart">
-			SELECT * FROM cart WHERE cartNum=#{cartNum}
+			resultType="map">
+			SELECT c.cartNum, c.itemNum, c.price, c.quantity, c.memberID,
+			       i.itemNum AS itemItemNum, i.goods,
+			       GROUP_CONCAT(a.itemAttachNum) AS fnums,
+			       GROUP_CONCAT(a.itemAttachParentsNum) AS pnums,
+			       GROUP_CONCAT(a.itemAttachName) AS fnames,
+			       GROUP_CONCAT(a.itemAttachFileSize) AS fsizes,
+			       GROUP_CONCAT(a.itemAttachFileContentType) AS contenttypes
+			FROM cart c
+			LEFT OUTER JOIN item i ON c.itemNum = i.itemNum
+			LEFT OUTER JOIN itemAttach a ON i.itemNum = a.itemAttachParentsNum
+			WHERE c.cartNum = #{cartNum}
+			GROUP BY c.cartNum;
 	</select>
+	
 </mapper>

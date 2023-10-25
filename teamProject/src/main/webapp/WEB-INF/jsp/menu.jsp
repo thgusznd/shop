@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>𝐚𝐬𝐞𝐚𝐝𝐨</title>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 function logout() {
@@ -94,7 +94,6 @@ function logout() {
 			</td>
 			<td>
 			<a href="/notice/list">NOTICE</a> <br/>
-			FAQ <br/>
 			<a href="/question/list">Q&A </a>
 			</td>
 			<td><a href="/review/list">REVIEW</a></td>
@@ -105,8 +104,13 @@ function logout() {
 			<c:if test="${member.memberID != null}">
 				<a href="/member/mypage/${member.memberID}">MY PAGE</a><br/>
 			</c:if>
+			<c:if test="${member.memberID == null}">
+				<a href="/member/join">JOIN</a>
+			</c:if>
+			<c:if test="${member.memberID != null}">
+				<a href="javascript:logout();">LOGOUT</a>
+			</c:if><br/>
 			<a href="/cart/list">CART (0)</a><br/>
-			<a href="javascript:logout();">LOGOUT</a>
 			</td>	
 		</tr>
 	</table>

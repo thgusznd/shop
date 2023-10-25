@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.ezen.spring.item.ItemDAO;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -28,6 +30,10 @@ public class CartController {
 	@Autowired
 	@Qualifier("cartDAO")
 	private CartDAO cartDAO;
+	
+	@Autowired
+	@Qualifier("itemDAO")
+	private ItemDAO itemDAO;
 	
 	@GetMapping("/") //test
 	@ResponseBody
@@ -42,6 +48,10 @@ public class CartController {
 	                               @RequestParam int itemNum,
 	                               @RequestParam int price,
 	                               @RequestParam int quantity) {
+		//아이템에 장바구니에 담긴 횟수(cartCnt) +1 해주기 
+		boolean cartCntUp = itemDAO.cartCntUp(itemNum);
+		log.info("cartCntUp={}",cartCntUp);
+		
 		Map<String, Object> map = new HashMap<>();
 		if(memberID==null) {
 			map.put("added", false);
@@ -75,7 +85,7 @@ public class CartController {
 	public String cartList(Model model, 
 						   @SessionAttribute(name="memberID",required = false) String memberID)
 	{
-		List<Cart> list = cartDAO.getList(memberID);
+		List<Map<String, String>> list = cartDAO.getList(memberID);
 		model.addAttribute("list", list);
 		model.addAttribute("memberID", memberID);
 		return "cart/cartList";
@@ -101,7 +111,7 @@ public class CartController {
 									  @RequestBody List<Integer> cartNums)
 	{
 		Map<String, Object> map = new HashMap<>();
-		List<Cart> cart = cartDAO.getList(memberID);
+		List<Map<String, String>> cart = cartDAO.getList(memberID);
 
 		if(cart==null) {
 			map.put("deleted", false);
@@ -119,7 +129,7 @@ public class CartController {
 	public Map<String,Object> cartClear(@SessionAttribute(name="memberID",required = false) String memberID){
 		Map<String, Object> map = new HashMap<>();
 		
-		List<Cart> cartList = cartDAO.getList(memberID);
+		List<Map<String, String>> cartList = cartDAO.getList(memberID);
 		if(cartList == null || cartList.isEmpty()) {
 			map.put("cleared", false);
 			map.put("msg", "장바구니가 비어있습니다.");

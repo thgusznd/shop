@@ -23,8 +23,12 @@
 	</update>
 	
 	<delete id="delete"
-		parameterType="Integer">
-		DELETE FROM answer WHERE answerNum=#{answerNum}
+			parameterType="Integer">
+			DELETE FROM answer WHERE answerNum=#{answerNum}
 	</delete>
+
+	<select id="checkAnswerExistsForQuestion" parameterType="Integer" resultType="int">
+	        SELECT COUNT(*) FROM answer WHERE pQuestionNum = #{pQuestionNum}
+	</select> 
 
 </mapper>

@@ -6,25 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Find ID</title>
-	<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-	<script type="text/javascript">
-	function logout() {
-		if(!confirm('로그아웃할까요?')) return;
-		$.ajax({
-			url : '/member/logout',
-			method:'get',
-			cache:false,
-			dataType:'json',
-			success:function(res){
-				alert(res.logout ? '로그아웃 성공':'로그아웃 실패');
-				if(res.logout) location.href='/member/';
-			},
-			error:function(xhr,status,err){
-				alert('에러:' + err);
-			}
-		});
-	}
-	</script>
 <style>
   body {
     font-family: Arial, sans-serif;

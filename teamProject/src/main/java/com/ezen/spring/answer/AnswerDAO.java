@@ -25,7 +25,11 @@ public class AnswerDAO {
 		return answerMapper.editAnswer(answer)>0;
 	}
 
-	public boolean delete(int answerNum) {
+	public boolean delete(int answerNum)  {
 		return answerMapper.delete(answerNum)>0;
+	}
+
+	public boolean checkAnswerExistsForQuestion(int pQuestionNum) {
+		return answerMapper.checkAnswerExistsForQuestion(pQuestionNum)>0;
 	}
 }

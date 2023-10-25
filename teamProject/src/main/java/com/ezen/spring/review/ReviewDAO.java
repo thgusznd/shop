@@ -82,5 +82,10 @@ public class ReviewDAO
 	public List<Map<String, String>> getTopReviews() { 
         return reviewMapper.getTopReviews();
     }
+
+	//리뷰 갯수 가져오기 
+	public int numberOfReviews(int itemNum) {
+		return reviewMapper.numberOfReviews(itemNum);
+	}
 	
 }

@@ -6,105 +6,86 @@
 <head>
 <meta charset="UTF-8">
 <title>Find Pwd</title>
-	<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-	<script type="text/javascript">
-	function logout() {
-		if(!confirm('로그아웃할까요?')) return;
-		$.ajax({
-			url : '/member/logout',
-			method:'get',
-			cache:false,
-			dataType:'json',
-			success:function(res){
-				alert(res.logout ? '로그아웃 성공':'로그아웃 실패');
-				if(res.logout) location.href='/member/';
-			},
-			error:function(xhr,status,err){
-				alert('에러:' + err);
-			}
-		});
-	}
-	</script>
-	<style>
-	  body {
-	    font-family: Arial, sans-serif;
-	    margin: 20px;
-	    background-color: #f2f2f2;
-	    color: #333;
-	  }
-	
-	  h3 {
-	    margin-bottom: 20px;
-	    padding-bottom: 5px;
-	    border-bottom: 1px solid #ccc;
-	    color: #333;
-	  }
-	
-	  form {
-	    max-width: 400px;
-	    margin: 0 auto;
-	    padding: 20px;
-	    background-color: #fff;
-	    border: 1px solid #ccc;
-	    border-radius: 5px;
-	  }
-	
-	  div {
-	  	margin-top:10px;
-	    margin-bottom: 10px;
-	  }
-	
-	  label {
-	    display: block;
-	    font-weight: bold;
-	  }
-	
-	  input[type="text"] {
-	    width: 95%;
-	    padding: 10px;
-	    margin-top:10px;
-	    margin-bottom: 10px;
-	    border: 1px solid #ccc;
-	    border-radius: 4px;
-	  }
-	
-	  button[type="submit"] {
-	    padding: 10px 20px;
-	    background-color: #333;
-	    color: #fff;
-	    border: none;
-	    border-radius: 4px;
-	    cursor: pointer;
-	  }
-	
-	  button[type="submit"]:hover {
-	    background-color: #555;
-	  }
-	  
-	  fieldset {
-	   	text-align:center;
-	   	border: none;
-	   	padding: 0;
-	   	margin: 0;
-	  }
-   
-   	  table#always {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: white; 
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-top: 20px;
-        font-size: 10pt;
-      }
-        
-      table#always td {
-          padding: 10px;
-      }
-      #pure {
-          font-size: 25pt;
-          font-weight: bold;
-      }
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f2f2f2;
+    color: #333;
+  }
+
+  h3 {
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ccc;
+    color: #333;
+  }
+
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  div {
+  	margin-top:10px;
+    margin-bottom: 10px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+  }
+
+  input[type="text"] {
+    width: 95%;
+    padding: 10px;
+    margin-top:10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #555;
+  }
+  
+  fieldset {
+   	text-align:center;
+   	border: none;
+   	padding: 0;
+   	margin: 0;
+  }
+  
+  table#always {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white; 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-size: 10pt;
+  }
+      
+   table#always td {
+     padding: 10px;
+   }
+   #pure {
+     font-size: 25pt;
+     font-weight: bold;
+   }
 </style>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>

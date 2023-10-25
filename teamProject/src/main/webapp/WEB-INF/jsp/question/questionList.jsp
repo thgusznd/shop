@@ -73,7 +73,12 @@
 	  <c:forEach var="q" items="${questionList}">
 	    <tr>
 	      <td>${q.questionNum}</td>
-	      <td><a href="/question/detail/${q.questionNum}">${q.questionTitle}</a></td>
+	      <td>
+	      	   <a href="/question/detail/${q.questionNum}">${q.questionTitle}</a>
+	      	   <c:if test="${answerStatusMap[q.questionNum]}">
+                     ✔ 답변 완료
+               </c:if>
+	      </td>
 	      <td>${q.questionAuthor}</td>
 	      <td>${q.questionDate}</td>
 	    </tr>

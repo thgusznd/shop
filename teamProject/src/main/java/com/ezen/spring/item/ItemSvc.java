@@ -44,7 +44,6 @@ public class ItemSvc {
 		int CartCnt = Integer.parseInt(m.get("CartCnt").toString());
 		String category = m.get("category").toString();
 		String explains = m.get("explains").toString();
-		String hashtag = m.get("hashtag").toString();
 		int inventory = Integer.parseInt(m.get("inventory").toString());
 
 		Item item = new Item();
@@ -55,7 +54,6 @@ public class ItemSvc {
 		item.setCartCnt(CartCnt);
 		item.setCategory(category);
 		item.setExplains(explains);
-		item.setHashtag(hashtag);
 		item.setInventory(inventory);
 		
 		return item;
@@ -98,20 +96,24 @@ public class ItemSvc {
 	}
 
 	@Transactional
-	public boolean deleteAttach(int itemAttachNum, String itemAttachName, HttpServletRequest request) 
-	{	
-		//DB에서 삭제 
-		boolean deleteAttachByDB = itemDAO.deleteAttach(itemAttachNum);  
+	public boolean deleteAttach(int itemAttachNum, String itemAttachName, HttpServletRequest request) {    
+	    ServletContext context = request.getServletContext();
+	    String savePath = context.getRealPath("/WEB-INF/items");
+	    File deleteFile = new File(savePath, itemAttachName);
+	    
+	    // 데이터베이스에서 삭제 
+	    boolean deleteAttachByDB = itemDAO.deleteAttach(itemAttachNum);  
 
-		ServletContext context = request.getServletContext();
-		String savePath = context.getRealPath("/WEB-INF/items");
-		File deleteFile = new File(savePath, itemAttachName);
+	    log.info("DB={}", deleteAttachByDB);
 
-		//서버 저장소에서 삭제
-		boolean deleteAttachByServer = deleteFile.delete(); 
-		
-		return deleteAttachByDB && deleteAttachByServer;
-	}
+	    // 서버의 파일 시스템에서 삭제
+	    boolean deleteAttachByServer = deleteFile.delete(); 
+
+	    log.info("Server={}", deleteAttachByServer);
+
+	    // 데이터베이스와 서버에서 모두 삭제가 성공하면 true를 반환
+	    return deleteAttachByDB && deleteAttachByServer;
+	} 
 
 	//Best item Top 10 가져오기 
 	public List<Map<String, String>> getTopItems(int limit) {

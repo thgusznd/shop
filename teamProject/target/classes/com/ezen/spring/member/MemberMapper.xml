@@ -8,8 +8,14 @@
 	<insert id="addMember"
 		parameterType="com.ezen.spring.member.Member">
 		INSERT INTO member VALUES(NULL,#{memberName},#{memberPhone},#{post},#{address},#{detailAddress},#{memberID},#{memberPwd},
-			#{memberEmail},#{memberSex},#{memberBirth},#{national},0,0,0,#{interest},"일반회원")	
+			#{memberEmail},#{memberSex},#{memberBirth},#{national},0,0,"일반회원")	
 	</insert>
+	
+	<select id="checkID"
+		parameterType="string" 
+		resultType="string">
+		SELECT * FROM member WHERE memberID=#{memberID}
+	</select>
 	
 	<select id="login"
 		parameterType="string"
@@ -45,6 +51,12 @@
 		parameterType="string" 
 		resultType="com.ezen.spring.member.Member">
 		SELECT * FROM member WHERE memberName=#{memberName} AND memberId=#{memberId} AND memberPhone=#{memberPhone}
+	</select>
+	
+	<select id="existMember"
+		parameterType="com.ezen.spring.member.Member" 
+		resultType="com.ezen.spring.member.Member">
+		SELECT * FROM member WHERE memberName=#{memberName} AND memberBirth=#{memberBirth} AND memberPhone=#{memberPhone}
 	</select>
 	
 	<select id="getMemmber"

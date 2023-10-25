@@ -69,8 +69,17 @@ public class QuestionController {
 	public String list(@SessionAttribute(name="memberID",required = false) String memberID, Model model) {
 		Member member = memberDAO.getMember(memberID);
 		List<Question> questionList = questionDAO.getList();
+		Map<Integer, Boolean> answerStatusMap = new HashMap<>();
+	      
+	       for (Question q : questionList) { //질문 리스트 중에 한 컬럼을 만들어서 답변의 존재 유무표시(답변 완료/ 답변 예정)
+	           boolean hasAnswer = answerDAO.checkAnswerExistsForQuestion(q.getQuestionNum());
+	           answerStatusMap.put(q.getQuestionNum(), hasAnswer);
+	       }
+
 		model.addAttribute("questionList", questionList);
 		model.addAttribute("member",member);
+		model.addAttribute("answerStatusMap", answerStatusMap); //맵에 담아 보여주기
+
 		return "question/questionList";
 	}
 	//질문 상세보기 

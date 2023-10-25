@@ -15,5 +15,7 @@ public interface AnswerMapper {
 
 	int delete(int answerNum);
 
+	int checkAnswerExistsForQuestion(int pQuestionNum);
+
 
 }

@@ -8,7 +8,7 @@
 	<insert id="addAndGetKey"
 		useGeneratedKeys="true" keyProperty="itemNum"
 		parameterType="com.ezen.spring.item.Item">
-		INSERT INTO item VALUES(NULL, #{goods}, #{price}, 0, 0, #{category}, #{explains}, #{hashtag}, #{inventory})
+		INSERT INTO item VALUES(NULL, #{goods}, #{price}, 0, 0, #{category}, #{explains}, #{inventory})
 	</insert>
 	
 	<insert id="addAttach" 
@@ -21,7 +21,7 @@
 	
 	<select id="getList"
 			resultType="map" >
-			SELECT b.itemNum itemNum, goods, price, purchaseCnt, CartCnt, category, explains, hashtag, inventory, 
+			SELECT b.itemNum itemNum, goods, price, purchaseCnt, CartCnt, category, explains, inventory, 
 				GROUP_CONCAT(a.itemAttachNum) fnums, 
 				GROUP_CONCAT(itemAttachParentsNum) pnums, 
 				GROUP_CONCAT(itemAttachName) fnames, 
@@ -35,7 +35,7 @@
 	
 	<select id="getCategoryList"
 			resultType="map" >
-			SELECT b.itemNum itemNum, goods, price, purchaseCnt, CartCnt, category, explains, hashtag, inventory, 
+			SELECT b.itemNum itemNum, goods, price, purchaseCnt, CartCnt, category, explains, inventory, 
 				GROUP_CONCAT(a.itemAttachNum) fnums, 
 				GROUP_CONCAT(itemAttachParentsNum) pnums, 
 				GROUP_CONCAT(itemAttachName) fnames, 
@@ -51,7 +51,7 @@
 	<select id="getItem"
 			parameterType="Integer"
 			resultType="map">
-			SELECT b.itemNum itemNum, goods, price, purchaseCnt, CartCnt, category, explains, hashtag, inventory, 
+			SELECT b.itemNum itemNum, goods, price, purchaseCnt, CartCnt, category, explains, inventory, 
 				GROUP_CONCAT(a.itemAttachNum) fnums, 
 				GROUP_CONCAT(itemAttachParentsNum) pnums, 
 				GROUP_CONCAT(itemAttachName) fnames, 
@@ -73,7 +73,7 @@
 		DELETE FROM item WHERE itemNum=#{itemNum}
 	</delete>
 	
-	<delete id="deleteAttach" parameterType="_int">
+	<delete id="deleteAttach" parameterType="Integer">
 	 	DELETE FROM itemAttach WHERE itemAttachNum=#{itemAttachNum}
 	</delete>
 
@@ -90,4 +90,9 @@
 		ORDER BY purchaseCnt DESC
 		LIMIT 10
 	 </select>
+	 
+	 <update id="cartCntUp"
+		parameterType="Integer">
+		UPDATE item SET cartCnt=cartCnt+1 WHERE itemNum=#{itemNUm}
+	</update>
 </mapper>

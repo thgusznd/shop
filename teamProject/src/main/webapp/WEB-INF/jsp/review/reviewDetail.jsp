@@ -130,9 +130,10 @@
 	</tr>
 </table>
 <p>
-<button type="button" onclick="location.href='/review/update/${review.reviewNum}'">수정</button>
-<button type="button" onclick="location.href='javascript:delReview(${review.reviewNum});'">삭제</button>
-
+<c:if test="${review.reviewAuthor == memberID && member.memberClass == '관리자'}">
+	<button type="button" onclick="location.href='/review/update/${review.reviewNum}'">수정</button>
+	<button type="button" onclick="location.href='javascript:delReview(${review.reviewNum});'">삭제</button>
+</c:if>
 </main>
 </body>
 </html>

@@ -33,5 +33,7 @@ public interface ReviewMapper
 	
 	public List<Map<String, String>> getTopReviews();
 
+	public int numberOfReviews(int itemNum);
+
 	
 }

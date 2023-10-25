@@ -21,7 +21,10 @@ import com.ezen.spring.item.ItemSvc;
 import com.ezen.spring.member.Member;
 import com.ezen.spring.member.MemberDAO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 @RequestMapping("/order")
 @SessionAttributes("memberID")
 public class OrderController 
@@ -38,21 +41,34 @@ public class OrderController
 	@Autowired
 	private ItemSvc itemSvc;
 	
-	@PostMapping("/addForm") //주문 폼 보여주기 
-	@ResponseBody
-	public String addForm(@SessionAttribute(name="memberID",required = false) String memberID,
-								   @RequestParam List<Integer> cartNums, Model model){
+	@GetMapping("/addorder")
+	public String addOrder(Order order,@SessionAttribute(name="memberID",required = false) String memberID,Model model)
+	{
 		Member member = memberDAO.getMember(memberID);
-		List<Cart> orderItemList = new ArrayList<>();
-		for(int i=0;i<cartNums.size();i++) {
-			Cart cart = cartDAO.getCartByCartNum(cartNums.get(i));
-			orderItemList.add(cart);
-		}
-		model.addAttribute(member);
-		model.addAttribute(orderItemList);
+		model.addAttribute("member",member);
+		List<Map<String, String>> list = cartDAO.getList(memberID);
+		model.addAttribute("list",list);
 		return "order/addOrderForm";
 	}
 	
+	@PostMapping("/addOrderForm")
+	public String addOrderForm(@RequestParam("cartNum") List<Integer> cartNums, Model model,
+							   @SessionAttribute(name="memberID", required = false) String memberID) {
+
+	    List<Map<String, Object>> cartList = new ArrayList<>();
+
+	    for(int i = 0; i < cartNums.size(); i++) {
+	    	Map<String, Object> cart = cartDAO.getCartByCartNum(cartNums.get(i));
+	    	cartList.add(cart);
+	    }
+	    log.info("cartList={}",cartList);
+	    model.addAttribute("cartList", cartList);
+	    Member member = memberDAO.getMember(memberID);
+	    model.addAttribute("member", member);
+
+	    return "order/addOrderForm";
+	}
+	 
 	@PostMapping("/add")
 	@ResponseBody
 	public Map<String, Object> addOrder(@SessionAttribute(name="memberID",required = false) String memberID, 
@@ -61,7 +77,6 @@ public class OrderController
 	{
 		boolean ordered = false;
 		
-		java.sql.Date paymentDate = new java.sql.Date(new Date().getTime());
 		int orderNum = orderDAO.getMaxOrderNum(); //마지막 orderNum 가져오기 
 		if(orderNum == 0) {
 			orderNum = 1;
@@ -70,22 +85,17 @@ public class OrderController
 		
 		int itemPaymentAmount = 0; //최종 상품 결제 금액 
 		for(int i=0;i<cartNums.size();i++) {
-			Cart cart = cartDAO.getCartByCartNum(cartNums.get(i));
-			//itemPaymentAmount += price * quantity; 
 			
 			Order order = new Order();
 			order.setOrderNum(orderNum); //주문번호 
-			order.setPaymentDate(paymentDate); //결제일 
-			order.setItemNum(cart.getItemNum()); //상품번호 
-			order.setOptionInformation(cart.getOptionInformation()); //cart에 옵션정보 변수 추가하기 
-			order.setQuantity(cart.getQuantity()); //수량 
+			order.setItemNum(orderForm.getItemNum()); //상품번호 
+			order.setQuantity(orderForm.getQuantity()); //수량 
 			order.setBuyer(memberID); //구매자 
-			order.setPaymentMethod(orderForm.getPaymentMethod()); //결제방법 추가하기  
+			order.setPaymentMethod(orderForm.getPaymentMethod()); //결제방법 
 			
 			//금액 관련 
-			order.setItemSellingPrice(cart.getPrice()); //판매가 
-			//쿠폰 금액 차감(수정예정) 
-			//itemPaymentAmount = itemSellingPrice - coupon ... 등 (수정예정) 
+			order.setItemSellingPrice(((Cart) cart).getPrice()); //판매가 
+			order.setReserveDiscount(cart)
 			order.setItemPaymentAmount(itemPaymentAmount); //최종 결제한 금액(환불시에 사용되는 금액) 
 			
 			//배송 관련 
@@ -164,7 +174,7 @@ public class OrderController
 	@GetMapping("/list")
 	public String orderList(Model model, @SessionAttribute(name="userid",required = false) String uid)
 	{
-		List<OrderVO> list = orderDAO.orderList(uid);
+		List<Order> list = orderDAO.orderList(uid);
 		model.addAttribute("list", list);
 		model.addAttribute("uid", uid);
 		return "itemOrder/orderList";

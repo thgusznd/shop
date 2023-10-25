@@ -27,5 +27,7 @@ public interface ItemMapper {
 	public int deleteAttach(int itemAttachNum); //첨부파일 삭제 
 
 	public List<Map<String, String>> getTopItems(int limit); //아이템 best top 10 가져오기 
+
+	public int cartCntUp(int itemNum); //장바구니에 담긴 횟수 + 1
 	
 }

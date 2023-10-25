@@ -104,6 +104,26 @@
 		  }
 		}
 	
+	function deleteAttach(itemAttachNum, itemAttachName) {
+		  $.ajax({
+			    url: '/item/deleteAttach',
+			    method: 'post',
+			    data: { itemAttachNum: itemAttachNum, itemAttachName: itemAttachName },
+			    dataType: 'json',
+			    success: function (res) {
+			      if (res.deleteAttach) {
+			        alert('첨부파일 삭제 성공');
+			        location.reload();
+			      } else {
+			        alert('첨부파일 삭제 실패');
+			        location.reload();
+			      }
+			    },
+			    error: function (xhr, status, err) {
+			      alert('에러:' + err);
+			    }
+		  });
+	}
 </script>
 <style>
 	body {
@@ -249,7 +269,7 @@
 	
 	<form id="addAttachForm" onsubmit="return addAttach();">
 		<fieldset>
-			<legend>첨부파일 추가</legend>
+			<legend>이미지 선택</legend>
 			<input type="hidden" name="itemAttachParentsNum" value="${item.itemNum}">
 			<input type="file" id="files" name="files" multiple>
 			<div id="preview-container"></div>

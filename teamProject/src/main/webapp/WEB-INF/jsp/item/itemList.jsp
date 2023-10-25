@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>𝐚𝐬𝐞𝐚𝐝𝐨</title>
 <style type="text/css">
 	body {
 		font-family: Arial, sans-serif;
@@ -43,15 +43,15 @@
 	}
 
 	img {
-		width: 250px;
-		height: 300px;
-		margin-left: 20px;
+	    width: 150px;
+	    height: auto; 
+	    margin-left: 20px;
 	}
 
 	@media (min-width: 768px) {
 		img {
-			width: 350px;
-			height: 475px;
+			width: 250px;
+			height: 300px;
 		}
 	}
 

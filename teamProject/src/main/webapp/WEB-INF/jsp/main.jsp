@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,12 +86,13 @@
 <%@ include file="menu.jsp" %>
 
 <div id="container">
-	<h2>🔥 Best Top 10</h2>
+	<h2>🔥 𝐓𝐨𝐩 𝟏𝟎 𝐏𝐨𝐩𝐮𝐥𝐚𝐫 𝐈𝐭𝐞𝐦𝐬 </h2>
 	<div class="product-container">
 	   <c:forEach var="item" items="${topItems}">
 	      <div class="product">
 	         <div id="itemImage">
-	         	<a href="/item/detail/${item.itemNum}"><img src="${pageContext.request.contextPath}/items/${item.inames}"></a>
+	         	<a href="/item/detail/${item.itemNum}">
+	         	<img src="${pageContext.request.contextPath}/items/${fn:split(item.inames, ',')[0]}">
 	         </div>
 	         <div id="itemName">
 	         	<a href="/item/detail/${item.itemNum}">${item.goods}</a>
@@ -102,12 +104,12 @@
 	   </c:forEach>
 	</div>
 	
-	<h2>🔥 Best Review Top 3</h2>
+	<h2>🔥 𝐓𝐨𝐩 𝟓 𝐁𝐞𝐬𝐭 𝐑𝐞𝐯𝐢𝐞𝐰𝐬 </h2>
 	<div class="product-container">
 	   <c:forEach var="review" items="${topReviews}">
 	      <div class="product">
 	         <div id="reviewImage">
-	         	<a href="/review/get/${review.reviewNum}"><img src="${pageContext.request.contextPath}/reviewPhoto/${review.reviewAttachNames}"></a>
+	         	<a href="/review/get/${review.reviewNum}"><img src="${pageContext.request.contextPath}/reviewPhoto/${fn:split(review.reviewAttachNames, ',')[0]}"></a>
 	         </div>
 	         <div id="reviewContents">
 	         	<a href="/review/get/${review.reviewNum}">${review.reviewContents}</a>

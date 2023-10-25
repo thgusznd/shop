@@ -1,6 +1,7 @@
 package com.ezen.spring.cart;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ public interface CartMapper {
 
 	public int cartClear(String memberID);
 
-	public List<Cart> getList(String memberID);
+	public List<Map<String, String>> getList(String memberID);
 
 	public int updateCart(Cart cart);
 
@@ -21,7 +22,7 @@ public interface CartMapper {
 
 	public Cart getCart(Cart cart);
 
-	public Cart getCartByCartNum(int cartNum);
+	public Map<String, Object> getCartByCartNum(int cartNum);
 
 }
  

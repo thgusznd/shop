@@ -16,10 +16,10 @@ import lombok.Setter;
 @EqualsAndHashCode(exclude= {"itemAttachName","itemAttachParentsNum","itemAttachFileSize","itemAttachFileContentType"})
 public class ItemAttach {
 
-	private int itemAttachNum;
-	private String itemAttachName;
-	private int itemAttachParentsNum;
-	private float itemAttachFileSize;
-	private String itemAttachFileContentType;
+	private int itemAttachNum; //상품 이미지 번호 
+	private String itemAttachName; //상품 이미지
+	private int itemAttachParentsNum; //이미지 관련 상품 번호 
+	private float itemAttachFileSize; //상품 이미지 파일 사이즈 
+	private String itemAttachFileContentType; //상품 이미지 파일 타입 
 	
 }

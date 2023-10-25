@@ -23,6 +23,10 @@ public interface MemberMapper {
 
 	public int deleteMember(String memberID);
 
-	public int updateSaveMoney(Member buyer); 
+	public int updateSaveMoney(Member buyer); //적립금 업데이트 
+
+	public String checkID(String memberID); //아이디 중복체크 
+
+	public Member existMember(Member member); //이미 존재하는 멤버인지 확인 
 
 }

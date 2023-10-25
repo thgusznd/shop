@@ -1,6 +1,7 @@
 package com.ezen.spring.cart;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,7 +23,7 @@ public class CartDAO {
 		return cartMapper.addCart(cart) > 0;
 	}
 
-	public List<Cart> getList(String memberID) {
+	public List<Map<String, String>> getList(String memberID) {
 		return cartMapper.getList(memberID);
 	}
 
@@ -45,8 +46,9 @@ public class CartDAO {
 		return cartMapper.getCart(cart);
 	}
 	
-	public Cart getCartByCartNum(int cartNum) 
+	public Map<String, Object> getCartByCartNum(int cartNum) 
 	{
 		return cartMapper.getCartByCartNum(cartNum);
 	}
+
 }

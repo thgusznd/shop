@@ -73,4 +73,16 @@ public class MemberDAO {
 		return memberMapper.updateSaveMoney(buyer)>0;
 	}
 
+	public boolean checkId(String memberID) {
+		String checkID = memberMapper.checkID(memberID);
+		if(checkID != null) return false;
+		else return true;
+	}
+
+	public boolean existMember(Member member) {
+		Member existMember = memberMapper.existMember(member);
+		if(existMember!=null) return true;
+		else return true;
+	}
+
 }

@@ -86,4 +86,9 @@
 		ORDER BY reviewLikeCnt DESC
 		LIMIT 3
 	 </select>
+	 
+	 <select id="numberOfReviews" parameterType="Integer" resultType="Integer">
+	 		 SELECT COUNT(*) FROM review WHERE reviewParentsNum=#{itemNum};
+	 </select>
+
 </mapper>  

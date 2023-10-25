@@ -260,9 +260,6 @@
 	            <option value="Beauty">Beauty</option>
 	        </select></td>
 		</tr>
-		<tr><th>해시태그</th>
-			<td><input type="text" name="hashtag"></td>
-		</tr>
 		<tr><th>상세설명</th>
 			<td><textarea name="explains"></textarea></td>
 		</tr>

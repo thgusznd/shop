@@ -66,6 +66,45 @@
 	button:hover {
 		background-color: #444;
 	}
+	
+	.review-list {
+	  margin-top: 20px;
+	  border-top: 1px solid #ccc;
+	  padding-top: 20px;
+	}
+	
+	.review-item {
+	  border: 1px solid #ccc;
+	  border-radius: 5px;
+	  margin-bottom: 20px;
+	  padding: 10px;
+	  background-color: #fff;
+	}
+	
+	.review-image {
+	  max-width: 100%;
+	  height: auto;
+	  border: 1px solid #ccc;
+	  border-radius: 5px;
+	}
+	
+	.review-title {
+	  font-size: 18px;
+	  margin-top: 10px;
+	}
+	
+	.review-info {
+	  margin-top: 10px;
+	}
+	
+	.review-buyer {
+	  font-weight: bold;
+	}
+	
+	.review-like {
+	  font-weight: bold;
+	  margin-left: 10px;
+	}
 </style>
 <script type="text/javascript">
 	function delItem(itemNum) {
@@ -84,7 +123,6 @@
 			}
 		});
 	}
-	return;
 </script>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <script type="text/javascript">
@@ -157,8 +195,7 @@
 			<button type="button" onclick="javascript:delItem(${item.itemNum});">삭제</button>
 		</c:if>
 	</nav>
-	
-	===============
+	구매후기(${numberOfReviews})
 	<c:forEach var="r" items="${reviewList}">
 		<!-- 기존에 출력된 review 중복 출력 방지 -->
 		<c:set var="reviewNum" value="${0}"></c:set>

@@ -83,4 +83,8 @@ public class ItemDAO {
         return itemMapper.getTopItems(limit);
     }
 
+	public boolean cartCntUp(int itemNum) {
+		return itemMapper.cartCntUp(itemNum)>0;
+	}
+
 }
